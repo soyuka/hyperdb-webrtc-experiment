@@ -1,0 +1,23 @@
+{
+  "name": "reddat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^16.2.0",
+    "hyperdb": "^3.0.0-2",
+    "webrtc-swarm": "^2.9.0"
+  },
+  "dependencies": {
+    "pump": "^3.0.0",
+    "random-access-idb": "github:random-access-storage/random-access-idb",
+    "signalhubws": "^1.0.4",
+    "to2": "^1.0.0"
+  }
+}
