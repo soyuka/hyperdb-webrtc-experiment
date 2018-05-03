@@ -12,12 +12,12 @@ const db = hyperdb(function (name) {
 }, key || undefined)
 
 db.on('ready', function () {
-  const hub = signalhub(db.key.toString('hex'), ['wss://soyuka.pw'])
+  var hub = signalhub(db.key.toString('hex'), ['wss://soyuka.pw'])
 
   console.log('db ready, key', db.key.toString('hex'))
   console.log('local key', db.local.key.toString('hex'))
 
-  const swarm = discovery(hub)
+  var swarm = discovery(hub)
 
   // simulate everything open/connected lazy
   setTimeout(() => {
@@ -35,7 +35,7 @@ db.on('ready', function () {
         console.log(data)
       })
     }
-  }, 3000)
+  }, 6000)
 
   swarm.on('connect', function (peer) {
     console.log('got connection', peer)
@@ -50,7 +50,38 @@ db.on('ready', function () {
       return
     }
 
-    db.createHistoryStream()
+    var rep = db.replicate({live: true, userData: db.local.key})
+    pump(rep, peer, rep, function (err) {
+      if (err) console.error(err)
+      else console.log('done rep')
+    })
+
+    pump(db.createHistoryStream(), to2.obj(function (row, enc, next) {
+      console.log('Have message', row)
+      next()
+    }, function (next) {
+      db.on('remote-update', onappend)
+
+      db.on('append', onappend)
+
+      function onappend (feed) {
+        var stream = db.createHistoryStream({reverse: true})
+        pump(stream, to2.obj(function (row, enc, next) {
+          console.log('have message', row)
+          stream.destroy()
+          // next()
+        }), function (err) {
+          if (err) console.error(err)
+        })
+      }
+
+      next()
+    }), function (err) {
+      if (err) {
+        console.error(err)
+      }
+    })
+
     // const stream = db.replicate({live: true, userData: db.local.key})
     // pump(stream, peer, stream, function () {
     //   console.log('end rep')
