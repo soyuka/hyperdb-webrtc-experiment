@@ -11,13 +11,16 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "^16.2.0",
-    "hyperdb": "^3.0.0-2",
+    "hyperdb": "github:jimpick/hyperdb#693560fd6b2d0c6d0abed7199efa45445a04c7db",
     "webrtc-swarm": "^2.9.0"
   },
   "dependencies": {
+    "hyperdrive": "github:jimpick/hyperdrive#689b1c9d1269ca3f85b67157a411c8cfa28ce3d7",
     "pump": "^3.0.0",
     "random-access-idb": "github:random-access-storage/random-access-idb",
     "signalhubws": "^1.0.4",
-    "to2": "^1.0.0"
+    "to2": "^1.0.0",
+    "wrtc": "^0.1.4",
+    "ws": "^5.1.1"
   }
 }
